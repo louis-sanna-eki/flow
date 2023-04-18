@@ -1,0 +1,96 @@
+<HTML>
+<HEAD>
+<TITLE>Mac OS X Server</TITLE>
+<META NAME="MSSmartTagsPreventParsing" CONTENT="true"/>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF">
+<CENTER>
+<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH=600>
+   <TR>
+      <TD>
+         <P><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH=600>
+            <TR>
+               <TD VALIGN=top WIDTH=200>
+                  <CENTER><IMG SRC="/grayx.jpg" WIDTH=111 HEIGHT=141 ALIGN=bottom></CENTER>
+               </TD>
+               <TD WIDTH=400>
+                  <P><IMG SRC="/osxserver.gif" WIDTH=360 HEIGHT=100 ALIGN=bottom><BR>
+                  <FONT SIZE="+2"><B>File not found!</B></FONT><BR>
+                  </P>
+                  
+                  <P>The URL you have loaded has not been found on this server.</P>
+                  
+                  
+                  
+                  <P>Please alert the system administrator if you believe you have reached this in error.</P>
+                  
+                  <P></P>
+               </TD>
+            </TR>
+         </TABLE>
+         <BR>
+         <FONT SIZE="+1" FACE="Arial" COLOR="#666666"><B>Additional
+         resources</B></FONT><BR>
+         <FONT SIZE="-2"><BR>
+         </FONT><TABLE BORDER=1 CELLSPACING=0 CELLPADDING=8 WIDTH=600>
+            <TR>
+               <TD VALIGN=top WIDTH=200>
+                  <P><FONT FACE="Arial"><B>Apple</B></FONT><B><BR>
+                  <BR>
+                  </B>For the latest information about Apple
+                  Computer, Mac OS X Server, and other Apple server
+                  products, visit:</P>
+                  
+                  <P><FONT SIZE="-1">- </FONT><A HREF="http://www.apple.com/"><FONT SIZE="-1">Apple
+                  </FONT></A><FONT SIZE="-1"><BR>
+                  <BR>
+                  - </FONT><A HREF="http://www.apple.com/macosx/server/"><FONT SIZE="-1">Mac
+                  OS X Server</FONT></A></P>
+               </TD>
+               <TD VALIGN=top WIDTH=200>
+                  <P><FONT FACE="Arial"><B>Apache Web
+                  Server</B></FONT><B><BR>
+                  <BR>
+                  </B>Detailed documentation on the Apache web server
+                  is available:</P>
+                  
+                  <P><FONT SIZE="-1">- In the Web Service section of
+                  the <I>Mac OS X Users Guide</I><BR>
+                  <BR>
+                  - </FONT><A HREF="/manual/"><FONT SIZE="-1">Locally</FONT></A><FONT SIZE="-1"><BR>
+                  <BR>
+                  - In the </FONT><A HREF="http://www.apache.org/docs/"><FONT SIZE="-1">Apache.org</FONT></A><FONT SIZE="-1">
+                  on-line documentation<BR>
+                  <BR>
+                  </FONT></P>
+               </TD>
+               <TD VALIGN=top WIDTH=200>
+                  <P><FONT FACE="Arial"><B>Technical
+                  Problems</B></FONT><B><BR>
+                  <BR>
+                  </B>If you have a question or encounter a problem
+                  with your server software you can:</P>
+                  
+                  <P><FONT SIZE="-1">- Search the </FONT><A HREF="http://kbase.info.apple.com"><FONT SIZE="-1">
+                  AppleCare Knowledge Base</FONT></A><FONT SIZE="-1"><BR>
+                  <BR>
+                  - Visit the </FONT><A HREF="http://www.apple.com/support/"><FONT SIZE="-1">Apple
+                  Support Site</FONT></A><FONT SIZE="-1"> for an
+                  answer or a workaround</FONT></P>
+                  
+                  <P></P>
+               </TD>
+            </TR>
+         </TABLE>
+         <BR>
+         <BR>
+         </P>
+         
+         <CENTER>Copyright &copy; 2004-2007 Apple Inc. All Rights Reserved.</CENTER>
+         
+      </TD>
+   </TR>
+</TABLE>
+</CENTER>
+</BODY>
+</HTML>

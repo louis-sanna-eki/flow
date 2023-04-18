@@ -1,0 +1,6 @@
+Options -Indexes
+DirectoryIndex flowsite.pl
+#Redirect permanent /cgi-bin/redirection.pl http://hemiptera-databases.org/flow/
+order allow,deny
+deny from 46.229.168. 
+allow from all

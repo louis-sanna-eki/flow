@@ -1,0 +1,11 @@
+Status: 500
+Content-type: text/html
+
+<h1>Software error:</h1>
+<pre>Died at /var/www/html/perl/explorer20.pl line 174.
+</pre>
+<p>
+For help, please send mail to the webmaster (<a href="mailto:webmaster@localhost">webmaster@localhost</a>), giving this error message 
+and the time and date of the error.
+
+</p>

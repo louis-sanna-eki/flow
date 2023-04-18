@@ -1,0 +1,10 @@
+"AcceptedTaxonID","ParentSpeciesID","InfraSpeciesEpithet","InfraSpeciesAuthorString","InfraSpeciesMarker","GSDNameStatus","Sp2000NameStatus","IsFossil","LifeZone","AdditionalData","LTSSpecialist","LTSDate","InfraSpeciesURL","GSDTaxonGUI","GSDNameGUI"
+303,,"","",,"original combination, valid: Yes","Accepted name",0,"terrestrial",,"Magnien Philippe","01/08/2013",http://hemiptera-databases.org/tessaratomidae?lang=en&card=name&id=",,
+304,,"","",,"original combination, valid: Yes","Accepted name",0,"terrestrial",,"Magnien Philippe","01/08/2013",http://hemiptera-databases.org/tessaratomidae?lang=en&card=name&id=",,
+305,,"","",,"original combination, valid: Yes","Accepted name",0,"terrestrial",,"Magnien Philippe","01/08/2013",http://hemiptera-databases.org/tessaratomidae?lang=en&card=name&id=",,
+306,,"","",,"original combination, valid: Yes","Accepted name",0,"terrestrial",,"Magnien Philippe","01/08/2013",http://hemiptera-databases.org/tessaratomidae?lang=en&card=name&id=",,
+307,288,"viridans","Montandon, 1894",,"original combination, valid: Yes","Accepted name",0,"terrestrial",,"Magnien Philippe","01/08/2013",http://hemiptera-databases.org/tessaratomidae?lang=en&card=name&id=307",,
+310,308,"chrysoptera","Vollenhoven, 1868",,"original combination, valid: Yes","Accepted name",0,"terrestrial",,"Magnien Philippe","01/08/2013",http://hemiptera-databases.org/tessaratomidae?lang=en&card=name&id=310",,
+311,308,"ramulosus","Horváth, 1900",,"original combination, valid: Yes","Accepted name",0,"terrestrial",,"Magnien Philippe","01/08/2013",http://hemiptera-databases.org/tessaratomidae?lang=en&card=name&id=311",,
+312,309,"flavicornis","(Guérin-Méneville, 1831)",,"new combination, valid: Yes","Accepted name",0,"terrestrial",,"Magnien Philippe","01/08/2013",http://hemiptera-databases.org/tessaratomidae?lang=en&card=name&id=312",,
+313,309,"gigantea","Horváth, 1900",,"original combination, valid: Yes","Accepted name",0,"terrestrial",,"Magnien Philippe","01/08/2013",http://hemiptera-databases.org/tessaratomidae?lang=en&card=name&id=313",,
