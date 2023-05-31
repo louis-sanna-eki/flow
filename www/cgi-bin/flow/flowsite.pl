@@ -5,6 +5,7 @@ use CGI qw/:standard/;
 use CGI::Carp qw( fatalsToBrowser ); # display errors in browser
 #SOFIZ comment
 #use CGI::ProgressBar qw/:standard/;
+use lib "$ENV{FLOW_SRCDIR}/cgi-bin/flow";
 use DBCommands qw (get_connection_params db_connection request_hash request_tab request_row get_title);
 use URI::Escape;
 #jompo
@@ -85,7 +86,7 @@ my $iconMouseOver = "
 my $pagetitle = "FLOW Website";
 
 # traductions
-my $config_file = '/etc/flow/flowexplorer.conf';
+my $config_file = "$ENV{FLOW_CONFDIR}/flow/flowexplorer.conf";
 
 my $config = get_connection_params($config_file);
 
@@ -981,7 +982,7 @@ sub read_lang {
 
 sub classification {
 	
-	my $conf = get_connection_params('/etc/flow/classif.conf');
+	my $conf = get_connection_params("$ENV{FLOW_CONFDIR}/flow/classif.conf");
 	
 	my $dbh = db_connection($conf);
 	
