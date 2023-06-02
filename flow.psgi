@@ -1,18 +1,26 @@
 use utf8;
 use strict;
 use warnings;
-
+use FindBin qw/$Bin/;
 use CGI::Compile;
 use CGI::Emulate::PSGI;
+use Plack::App::File;
+use Plack::Builder;
 
-$ENV{FLOW_CONFDIR} = "d:/Git/DAMI/flow/etc";
-$ENV{FLOW_SRCDIR}  = "d:/Git/DAMI/flow/www";
+
+$ENV{FLOW_CONFDIR} = "$Bin/etc";
+$ENV{FLOW_SRCDIR}  = "$Bin/www";
 
 
-my $cgi_script = "cgi-bin/flow/flowsite.pl";
-use lib "cgi-bin/flow";
+my $cgi_script = "$Bin/www/cgi-bin/flow/flowsite.pl";
 my $sub = CGI::Compile->compile($cgi_script);
-my $app = CGI::Emulate::PSGI->handler($sub);
+my $cgi_app = CGI::Emulate::PSGI->handler($sub);
+
+my $app = builder {
+  mount "/flow" => $cgi_app;
+  mount "/"    => Plack::App::File->new(root => "$Bin/www/html/Documents")->to_app;
+
+};
 
 
 # Allow this script to be run also directly (without 'plackup'), so that

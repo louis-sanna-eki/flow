@@ -96,8 +96,8 @@ my $dbc = db_connection($config);
 
 my $last = request_row("SELECT modif FROM synopsis;",$dbc);
 
-my $docfullpath = '/var/www/html/Documents/flowdocs/';
-#my $docfullpath = '/var/www/html/Documents/flowdocs/';
+my $docfullpath = "$ENV{FLOW_SRCDIR}/html/Documents/flowdocs/";
+
 
 my $searchjs = $docfullpath.$config->{'SEARCHJS'};
 
@@ -965,6 +965,10 @@ sub read_lang {
 	my $login  = $conf->{TRAD_LOGIN};
 	my $pwd    = $conf->{TRAD_PWD};
 	my $webmaster = $conf->{TRAD_WMR};
+
+        # DAL TMP HACK
+        $xlang //= 'fr';
+
 	if ( my $dbc = DBI->connect("DBI:$rdbms:dbname=$db;host=$server;port=$port", $login, $pwd) ){
 		$tr = $dbc->selectall_hashref("SELECT id, $xlang FROM traductions;", "id");
 		$dbc->disconnect;
