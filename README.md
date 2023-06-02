@@ -19,17 +19,35 @@ les couches métier/javascript/database, etc.
 TO BE CONTINUED -- WORK IN PROGRESS.
 
 
+## Prérequis
+
+Un serveur Postgresql avec une database `flow` et une database `traduction_utf8`, chargées avec les
+fichier SQL du répertoire `dumps`.
+Les credentials de connexion (login, passwd) sont dans le fichier `flow_conf.yaml` à la racine du repository --
+ajustez pour votre environnement.
+
+
+
 ## Installation
 
+Le fichier `cpanfile` contient la liste des modules Perl nécessaires pour le fonctionnement de l'appli.
+La commande ci-dessous installe toutes les dépendances.
+
 ```
-cpanm --installdeps .  # va installer les modules "Plack" nécessaires au fonctionnement de l'appli
+cpanm --installdeps .
 ```
 
-## Lancement en ligne de commande
+## Lancement de l'appli en ligne de commande
 
 ```
 plackup flow.psgi     # lance un serveur local, par défaut sur port 5000
 ```
 
-Visiter la page http://localhost:5000/flow
+Visiter la page [http://localhost:5000/flow](http://localhost:5000/flow)
+
+Un autre port peut être spécifié :
+
+```
+plackup -p 4999 flow.psgi
+```
 

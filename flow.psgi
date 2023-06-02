@@ -29,7 +29,7 @@ my $app = builder {
 unless (caller) {
   require Plack::Runner;
   my $runner = Plack::Runner->new;
-  $runner->parse_options(-p => 5439, @ARGV);
+  $runner->parse_options(@ARGV);
   return $runner->run($app);
 }
 
