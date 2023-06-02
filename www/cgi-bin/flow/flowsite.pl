@@ -5,7 +5,6 @@ use CGI qw/:standard/;
 use CGI::Carp qw( fatalsToBrowser ); # display errors in browser
 #SOFIZ comment
 #use CGI::ProgressBar qw/:standard/;
-use lib "$ENV{FLOW_SRCDIR}/cgi-bin/flow";
 use DBCommands qw (get_connection_params db_connection request_hash request_tab request_row get_title);
 use URI::Escape;
 #jompo

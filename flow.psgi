@@ -7,6 +7,7 @@ use CGI::Emulate::PSGI;
 use Plack::App::File;
 use Plack::Builder;
 
+use lib "$Bin/lib";
 
 $ENV{FLOW_CONFDIR} = "$Bin/etc";
 $ENV{FLOW_SRCDIR}  = "$Bin/www";
