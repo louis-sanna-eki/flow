@@ -20,7 +20,6 @@ my $cgi_app = CGI::Emulate::PSGI->handler($sub);
 my $app = builder {
   mount "/flow" => $cgi_app;
   mount "/"    => Plack::App::File->new(root => "$Bin/www/html/Documents")->to_app;
-
 };
 
 
@@ -36,3 +35,9 @@ unless (caller) {
 
 return $app;
 
+__END__
+
+TODO
+  - suppr écriture dans fichier search_flow.js (persistence des id de noms)
+  - unifier les multiples copies de modules DBCommand
+  - redirect main url
