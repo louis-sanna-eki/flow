@@ -4,7 +4,8 @@ use Carp;
 use strict;
 use warnings;
 use DBI;
-
+use YAML::XS;
+  
 BEGIN {
 	use Exporter   ();
 	use vars       qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
@@ -69,6 +70,25 @@ sub get_connection_params {
 		die "No configuration file could be found\n";
 	}
 }
+
+sub connect_db {
+  my ($self, $db_name) = @_;
+
+  # get credentials from the YAML config file
+  my $config    = YAML::XS::LoadFile($ENV{FLOW_CONF_YAML});
+  my $db_config = $config->{databases}{$db_name}
+    or die "connect_db(): no config for database '$db_name'";
+  my $connect_params = $db_config->{connect}
+    or die "connect_db(): no config for '$db_name' has no 'connect' entry";
+
+  # connect
+  my $dbh = DBI->connect(@$connect_params)
+    or die $DBI::errstr;
+
+  return $dbh;
+}
+
+
 
 # Database connection functions
 ##############################################################################

@@ -9,8 +9,9 @@ use Plack::Builder;
 
 use lib "$Bin/lib";
 
-$ENV{FLOW_CONFDIR} = "$Bin/etc";
-$ENV{FLOW_SRCDIR}  = "$Bin/www";
+$ENV{FLOW_CONF_YAML} = "$Bin/flow_conf.yaml";
+$ENV{FLOW_CONFDIR}   = "$Bin/etc";
+$ENV{FLOW_SRCDIR}    = "$Bin/www";
 
 
 my $cgi_script = "$Bin/www/cgi-bin/flow/flowsite.pl";

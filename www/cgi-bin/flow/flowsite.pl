@@ -89,9 +89,9 @@ my $config_file = "$ENV{FLOW_CONFDIR}/flow/flowexplorer.conf";
 
 my $config = get_connection_params($config_file);
 
-my $traduction = read_lang($config, $xlang);
+my $traduction = read_lang($xlang);
 
-my $dbc = db_connection($config);
+my $dbc = DBCommands->connect_db('flow');
 
 my $last = request_row("SELECT modif FROM synopsis;",$dbc);
 
@@ -955,21 +955,10 @@ sub search_formating {
 }
 
 sub read_lang {
-	my ( $conf ) = @_;
-	my $tr = { };
-	my $rdbms  = $conf->{TRAD_RDBMS};
-	my $server = $conf->{TRAD_SERVER};
-	my $db     = $conf->{TRAD_DB};
-	my $port   = $conf->{TRAD_PORT};
-	my $login  = $conf->{TRAD_LOGIN};
-	my $pwd    = $conf->{TRAD_PWD};
-	my $webmaster = $conf->{TRAD_WMR};
+	my ( $xlang ) = @_;
 
-        # DAL TMP HACK
-        $xlang //= 'fr';
-
-	if ( my $dbc = DBI->connect("DBI:$rdbms:dbname=$db;host=$server;port=$port", $login, $pwd) ){
-		$tr = $dbc->selectall_hashref("SELECT id, $xlang FROM traductions;", "id");
+	if ( my $dbc = DBCommands->connect_db('traduction_utf8')) {
+		my $tr = $dbc->selectall_hashref("SELECT id, $xlang FROM traductions;", "id");
 		$dbc->disconnect;
 		return $tr;
 	}
