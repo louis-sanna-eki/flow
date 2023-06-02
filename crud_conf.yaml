@@ -1,0 +1,108 @@
+app:
+  name: Flow CRUD
+datasources :
+  FlowDB :
+    require : FlowDataModel
+    schema_class: FlowDataModel
+    dbh:
+      connect:
+        - dbi:Pg:dbname=flow
+        - postgres
+        - pgadmin
+        - RaiseError    : 1
+    filters:
+      exclude: '^sql_'
+    tablegroups:
+      - name: taxonomie
+        node: open
+        tables:
+        - taxons
+        - taxons_associes
+        - noms
+        - noms_complets
+        - noms_vernaculaires
+        - hierarchie
+        - familles
+      - name: publications
+        node: open
+        tables:
+        - publications
+        - auteurs
+        - revues
+        - editions
+      - name: types
+        tables:
+        - types_association
+        - types_cavernicolous
+        - types_depot
+        - types_designation
+        - types_observation
+        - types_publication
+        - types_type
+      - name: geo
+        tables:
+        - villes
+        - holt_realms
+        - holt_regions
+        - pays
+        - regions_biogeo
+        - lieux_depot
+      - name: code_lists
+        tables:
+        - display_modes
+        - etats_conservation
+        - modes_capture
+        - rangs
+        - sexes
+        - statuts
+        - langages
+      - name: n_to_n
+        tables:
+        - auteurs_x_publications
+        - noms_x_auteurs
+        - noms_x_images
+        - noms_x_types
+        - taxons_x_documents
+        - taxons_x_images
+        - taxons_x_noms
+        - taxons_x_pays
+        - taxons_x_periodes
+        - taxons_x_plantes
+        - taxons_x_regions_biogeo
+        - taxons_x_sites
+        - taxons_x_taxons_associes
+        - taxons_x_vernaculaires
+        - txn_to_txt
+      - name: divers
+        node: open
+        tables:
+        - dbinfo
+        - images
+        - modes_capture
+        - niveaux_frequence
+        - niveaux_geologiques
+        - periodes
+        - plantes
+        - reencode
+        - synopsis
+      - name: tables vides
+        tables:
+        - agents
+        - documents
+        - habitats
+        - lithostrats
+        - localites
+        - molecular
+        - niveaux_confirmation
+        - regions
+        - types_agent
+        - types_preservation
+  traduction_utf8 :
+    dbh:
+      connect:
+        - dbi:Pg:dbname=traduction_utf8
+        - postgres
+        - pgadmin
+        - RaiseError    : 1
+    filters:
+      exclude: '^sql_'

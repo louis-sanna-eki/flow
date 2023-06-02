@@ -1,3 +1,4 @@
+requires 'App::AutoCRUD';
 requires 'CGI::Compile';
 requires 'CGI::Emulate::PSGI';
 requires 'FindBin';

@@ -6,12 +6,16 @@ use CGI::Compile;
 use CGI::Emulate::PSGI;
 use Plack::App::File;
 use Plack::Builder;
+use YAML::XS;
+use App::AutoCRUD;
+
 
 use lib "$Bin/lib";
 
 $ENV{FLOW_CONF_YAML} = "$Bin/flow_conf.yaml";
 $ENV{FLOW_CONFDIR}   = "$Bin/etc";
 $ENV{FLOW_SRCDIR}    = "$Bin/www";
+my $crud_conf        = "$Bin/crud_conf.yaml";
 
 
 my $cgi_script = "$Bin/www/cgi-bin/flow/flowsite.pl";
@@ -20,7 +24,8 @@ my $cgi_app = CGI::Emulate::PSGI->handler($sub);
 
 my $app = builder {
   mount "/flow" => $cgi_app;
-  mount "/"    => Plack::App::File->new(root => "$Bin/www/html/Documents")->to_app;
+  mount "/"     => Plack::App::File->new(root => "$Bin/www/html/Documents")->to_app;
+  mount "/crud" => App::AutoCRUD->new(config => YAML::XS::LoadFile($crud_conf))->to_app;
 };
 
 
