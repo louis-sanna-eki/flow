@@ -894,49 +894,6 @@ $dbc->disconnect;
 
 exit;
 
-sub search_formating {
-	my ($table, $arr, $thesaur, $dbh) = @_;
-			
-	my $ids;
-	my $values;
-	my $authors = [];
-	foreach (@{$arr}) {
-		$_->[1] =~ s/'/\\'/g;
-		$_->[1] =~ s/"/\\"/g;
-		$_->[1] =~ s/\[/\\[/g;
-		$_->[1] =~ s/\]/\\]/g;
-		$_->[1] =~ s/  / /g;
-		
-		push(@{$ids}, $_->[0]);
-		push(@{$values}, $_->[1]);
-		
-		if ($table ne 'noms_complets') {
-			if ($_->[1] =~ m|[^A-Z a-z 0-9 : , ( ) \[ \] ! _ = & ° . * ; “ " ’ ” ' \\ \/ \- – ? ‡ \n ]|) {
-				my ($res) = @{request_row("SELECT reencodage('".$_->[1]."');", $dbh)};
-				$res =~ s/'/\\'/g;
-				$res =~ s/"/\\"/g;
-				$res =~ s/\[/\\[/g;
-				$res =~ s/\]/\\]/g;
-				$res =~ s/  / /g;
-				
-				push(@{$ids}, $_->[0]);
-				push(@{$values}, $res);
-			}	
-		}
-		else {
-			$_->[2] =~ s/'/\\'/g;
-			$_->[2] =~ s/"/\\"/g;
-			$_->[2] =~ s/\[/\\[/g;
-			$_->[2] =~ s/\]/\\]/g;
-			$_->[2] =~ s/  / /g;
-			push(@{$authors}, $_->[2]);
-		}
-	}
-	${$thesaur} .= $table . "ids = ['" . join("','", @{$ids}) . "']; $table = ['" . join("','", @{$values}) . "']; ";
-	if ($table eq 'noms_complets') {
-		${$thesaur} .= "authors = ['" . join("','", @{$authors}) . "']; ";
-	}
-}
 
 sub read_lang {
 	my ( $xlang ) = @_;
@@ -1064,7 +1021,7 @@ sub classification {
 sub generate_searchjs_file {
   my ($json_file, $dbh, $xlang) = @_;
 
-  my $names = $dbh->selectall_arrayref(<<_EOSQL_);
+  my $full_names = $dbh->selectall_arrayref(<<_EOSQL_);
      SELECT nc.index, nc.orthographe, 
             CASE WHEN (SELECT ordre FROM rangs WHERE index = nc.ref_rang) 
                     > (SELECT ordre FROM rangs WHERE en = 'genus') 
@@ -1083,14 +1040,14 @@ _EOSQL_
      SELECT index, coalesce(nom || ' ', '') || coalesce(prenom, '') AS auteur from auteurs
 _EOSQL_
 
-  my $distribs = $dbh->selectall_arrayref(<<_EOSQL_);
+  my $countries = $dbh->selectall_arrayref(<<_EOSQL_);
      SELECT index, $xlang from pays where index in (SELECT DISTINCT ref_pays FROM taxons_x_pays)
 _EOSQL_
 
 
-  # suppression des accents
+  # suppression des accents pour les auteurs et les pays
   my $unaccenter = Text::Transliterator::Unaccent->new;
-  $unaccenter->($_->[1]) foreach @$authors, @$distribs;
+  $unaccenter->($_->[1]) foreach @$authors, @$countries;
 
 
   # génération au format JSON
@@ -1100,10 +1057,10 @@ _EOSQL_
     return "${name}ids=" . $json_coder->encode([map {$_->[0]} @$rows]) . ";\n"
          . "${name}="    . $json_coder->encode([map {$_->[1]} @$rows]) . ";\n"
   };
-  my $json = $mk_json->(noms_complets => $names)
-           . "authors=" . $json_coder->encode([map {$_->[2]} @$names]) . ";\n"
+  my $json = $mk_json->(noms_complets => $full_names)
+           . "authors=" . $json_coder->encode([map {$_->[2]} @$full_names]) . ";\n"
            . $mk_json->(auteurs       => $authors)
-           . $mk_json->(pays          => $distribs);
+           . $mk_json->(pays          => $countries);
 
   # écriture dans le fichier
   open my $fh, ">:raw", $json_file or die "can't write into file $json_file";
