@@ -7,6 +7,11 @@ use CGI::Carp qw( fatalsToBrowser ); # display errors in browser
 #use CGI::ProgressBar qw/:standard/;
 use DBCommands qw (get_connection_params db_connection request_hash request_tab request_row get_title);
 use URI::Escape;
+use JSON::XS;
+use Text::Transliterator::Unaccent;
+
+
+
 #jompo
 use open ':std', ':encoding(UTF-8)';
 
@@ -144,7 +149,9 @@ for (my $i = 1; $i < scalar(keys(%types)) + 1; $i++) {
 }
 
 my $args;
-my $thesauri;
+
+
+
 my $onload = <<_EOJS_;
   AutoComplete_Create('noms_complets', noms_complets, 'noms_completsids', authors, 10);
   AutoComplete_Create('auteurs', auteurs, auteursids, '', 10);
@@ -152,28 +159,12 @@ my $onload = <<_EOJS_;
 _EOJS_
 
 
-if ( open(SEARCHJS, "<$searchjs") ) {
-	my $delai = time - (stat SEARCHJS)[9];
-	close(SEARCHJS);
-	if (!($delai < 1800 and !url_param('reload'))) {
-		open(SEARCHJS, ">$searchjs");
-		
-		my $names = request_tab("SELECT nc.index, nc.orthographe, CASE WHEN (SELECT ordre FROM rangs WHERE index = nc.ref_rang) > (SELECT ordre FROM rangs WHERE en = 'genus') THEN nc.autorite ELSE coalesce(nc.autorite, '') || coalesce(' (' || (SELECT orthographe FROM noms WHERE index = (SELECT ref_nom_parent FROM noms WHERE index = nc.index)) || ')', '') END FROM noms_complets AS nc LEFT JOIN rangs AS r ON nc.ref_rang = r.index WHERE r.en not in ('order', 'suborder') ORDER BY nc.orthographe;",$dbc,2);
-		my $authors = request_tab("SELECT index, coalesce(nom || ' ', '') || coalesce(prenom, '') AS auteur from auteurs;",$dbc,2);
-		my $distribs = request_tab("SELECT index, $xlang from pays where index in (SELECT DISTINCT ref_pays FROM taxons_x_pays);",$dbc,2);
-		
-		search_formating('noms_complets', $names, \$thesauri, $dbc);
-		search_formating('auteurs', $authors, \$thesauri, $dbc);
-		search_formating('pays', $distribs, \$thesauri, $dbc);
+# régénération automatique du fichier "search_flow.js", toutes les 30 min.
+my $searchjs_last_write_time = (stat $searchjs)[9]
+  or die "Can't stat file $searchjs";
+generate_searchjs_file($searchjs, $dbc, $xlang)
+  if time - $searchjs_last_write_time >= 1800 or url_param('reload');
 
-		print SEARCHJS $thesauri;
-	
-		close(SEARCHJS);
-	}
-}
-else {
-	die "Can't open $searchjs";
-}
 
 my $header = header({-Type=>'text/html', -Charset=>'UTF-8'}).
 	start_html(	-title  =>"Planthoppers: $pagetitle",
@@ -920,7 +911,7 @@ sub search_formating {
 		push(@{$values}, $_->[1]);
 		
 		if ($table ne 'noms_complets') {
-			if ($_->[1] =~ m|[^A-Z a-z 0-9 : , ( ) \[ \] ! _ = & Â° . * ; â€œ "Ã© â€™ â€� Ã©' \\ \/ \- â€“ ? â€¡ \n ]|) {
+			if ($_->[1] =~ m|[^A-Z a-z 0-9 : , ( ) \[ \] ! _ = & ° . * ; “ " ’ ” ' \\ \/ \- – ? ‡ \n ]|) {
 				my ($res) = @{request_row("SELECT reencodage('".$_->[1]."');", $dbh)};
 				$res =~ s/'/\\'/g;
 				$res =~ s/"/\\"/g;
@@ -1068,3 +1059,56 @@ sub classification {
 			
 	my $content = h2({-style=>'margin-left: 20px'}, "Hemiptera classification"). br. $classif;
 }
+
+
+sub generate_searchjs_file {
+  my ($json_file, $dbh, $xlang) = @_;
+
+  my $names = $dbh->selectall_arrayref(<<_EOSQL_);
+     SELECT nc.index, nc.orthographe, 
+            CASE WHEN (SELECT ordre FROM rangs WHERE index = nc.ref_rang) 
+                    > (SELECT ordre FROM rangs WHERE en = 'genus') 
+                 THEN nc.autorite 
+                 ELSE coalesce(nc.autorite, '') || coalesce(' (' || 
+                      (SELECT orthographe FROM noms WHERE index = 
+                          (SELECT ref_nom_parent FROM noms WHERE index = nc.index)) 
+                      || ')', '')
+            END 
+      FROM noms_complets AS nc 
+      LEFT JOIN rangs AS r ON nc.ref_rang = r.index 
+      WHERE r.en not in ('order', 'suborder') ORDER BY nc.orthographe
+_EOSQL_
+
+  my $authors = $dbh->selectall_arrayref(<<_EOSQL_);
+     SELECT index, coalesce(nom || ' ', '') || coalesce(prenom, '') AS auteur from auteurs
+_EOSQL_
+
+  my $distribs = $dbh->selectall_arrayref(<<_EOSQL_);
+     SELECT index, $xlang from pays where index in (SELECT DISTINCT ref_pays FROM taxons_x_pays)
+_EOSQL_
+
+
+  # suppression des accents
+  my $unaccenter = Text::Transliterator::Unaccent->new;
+  $unaccenter->($_->[1]) foreach @$authors, @$distribs;
+
+
+  # génération au format JSON
+  my $json_coder = JSON::XS->new->utf8->pretty;
+  my $mk_json = sub {
+    my ($name, $rows) = @_;
+    return "${name}ids=" . $json_coder->encode([map {$_->[0]} @$rows]) . ";\n"
+         . "${name}="    . $json_coder->encode([map {$_->[1]} @$rows]) . ";\n"
+  };
+  my $json = $mk_json->(noms_complets => $names)
+           . "authors=" . $json_coder->encode([map {$_->[2]} @$names]) . ";\n"
+           . $mk_json->(auteurs       => $authors)
+           . $mk_json->(pays          => $distribs);
+
+  # écriture dans le fichier
+  open my $fh, ">:raw", $json_file or die "can't write into file $json_file";
+  print $fh $json;;
+  close $fh;
+}
+
+
