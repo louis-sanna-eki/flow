@@ -145,29 +145,26 @@ for (my $i = 1; $i < scalar(keys(%types)) + 1; $i++) {
 
 my $args;
 my $thesauri;
-my $onload;
-if ( open(SEARCHJS, "<$searchjs") ) {
-	
-	my $delai = time - (stat SEARCHJS)[9];
-	
-	close(SEARCHJS);
-		
-	if ($delai < 1800 and !url_param('reload')) {
+my $onload = <<_EOJS_;
+  AutoComplete_Create('noms_complets', noms_complets, 'noms_completsids', authors, 10);
+  AutoComplete_Create('auteurs', auteurs, auteursids, '', 10);
+  AutoComplete_Create('pays', pays, paysids, '', 10);
+_EOJS_
 
-		$onload .= "AutoComplete_Create('noms_complets', noms_complets, 'noms_completsids', authors, 10);";
-		$onload .= "AutoComplete_Create('auteurs', auteurs, auteursids, '', 10);";
-		$onload .= "AutoComplete_Create('pays', pays, paysids, '', 10);";
-	}
-	else {
+
+if ( open(SEARCHJS, "<$searchjs") ) {
+	my $delai = time - (stat SEARCHJS)[9];
+	close(SEARCHJS);
+	if (!($delai < 1800 and !url_param('reload'))) {
 		open(SEARCHJS, ">$searchjs");
 		
 		my $names = request_tab("SELECT nc.index, nc.orthographe, CASE WHEN (SELECT ordre FROM rangs WHERE index = nc.ref_rang) > (SELECT ordre FROM rangs WHERE en = 'genus') THEN nc.autorite ELSE coalesce(nc.autorite, '') || coalesce(' (' || (SELECT orthographe FROM noms WHERE index = (SELECT ref_nom_parent FROM noms WHERE index = nc.index)) || ')', '') END FROM noms_complets AS nc LEFT JOIN rangs AS r ON nc.ref_rang = r.index WHERE r.en not in ('order', 'suborder') ORDER BY nc.orthographe;",$dbc,2);
 		my $authors = request_tab("SELECT index, coalesce(nom || ' ', '') || coalesce(prenom, '') AS auteur from auteurs;",$dbc,2);
 		my $distribs = request_tab("SELECT index, $xlang from pays where index in (SELECT DISTINCT ref_pays FROM taxons_x_pays);",$dbc,2);
 		
-		search_formating('noms_complets', $names, \$thesauri, \$onload, $dbc);
-		search_formating('auteurs', $authors, \$thesauri, \$onload, $dbc);
-		search_formating('pays', $distribs, \$thesauri, \$onload, $dbc);
+		search_formating('noms_complets', $names, \$thesauri, $dbc);
+		search_formating('auteurs', $authors, \$thesauri, $dbc);
+		search_formating('pays', $distribs, \$thesauri, $dbc);
 
 		print SEARCHJS $thesauri;
 	
@@ -907,7 +904,7 @@ $dbc->disconnect;
 exit;
 
 sub search_formating {
-	my ($table, $arr, $thesaur, $load, $dbh) = @_;
+	my ($table, $arr, $thesaur, $dbh) = @_;
 			
 	my $ids;
 	my $values;
@@ -947,10 +944,6 @@ sub search_formating {
 	${$thesaur} .= $table . "ids = ['" . join("','", @{$ids}) . "']; $table = ['" . join("','", @{$values}) . "']; ";
 	if ($table eq 'noms_complets') {
 		${$thesaur} .= "authors = ['" . join("','", @{$authors}) . "']; ";
-		${$load} .= "AutoComplete_Create('$table', $table, $table"."ids, authors, 10);";
-	}
-	else {
-		${$load} .= "AutoComplete_Create('$table', $table, $table"."ids, '', 10);";
 	}
 }
 

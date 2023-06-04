@@ -23,9 +23,11 @@ my $sub = CGI::Compile->compile($cgi_script);
 my $cgi_app = CGI::Emulate::PSGI->handler($sub);
 
 my $app = builder {
+
+  # mount "/flow/search_flow.js" => SearchJs->to_app;
   mount "/flow" => $cgi_app;
-  mount "/"     => Plack::App::File->new(root => "$Bin/www/html/Documents")->to_app;
   mount "/crud" => App::AutoCRUD->new(config => YAML::XS::LoadFile($crud_conf))->to_app;
+  mount "/"     => Plack::App::File->new(root => "$Bin/www/html/Documents")->to_app;
 };
 
 
