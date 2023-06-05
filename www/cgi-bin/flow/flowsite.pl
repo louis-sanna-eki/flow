@@ -371,7 +371,6 @@ my $card = url_param('card') || '';
 		$script = "/var/www/html/perl/explorer20.pl $args";
 	}
 	elsif ($xpage eq 'project') {
-					
 		$content = 	table(
 					Tr(
 					td({-style=>"padding-right: 20px; width: 700px;"},
@@ -383,7 +382,6 @@ my $card = url_param('card') || '';
 				).
 				table(
 					Tr(
-						
 						td({-style=>"padding-right: 20px;"}, img({-src=>$docpath."vohimana3.png", alt=>"vohimana", width=>'200px', height=>'150px'}),p),
 						td(
 							span({-name=>'desc', -class=>'paragrafTitleStyle'}, $traduction->{'descr_key'}->{$xlang}),p,
@@ -393,7 +391,6 @@ my $card = url_param('card') || '';
 				).
 				table(
 					Tr(
-						
 						td({-style=>"padding-right: 20px;"},
 							span({-name=>'tech', -class=>'paragrafTitleStyle'}, $traduction->{'tech_key'}->{$xlang}),p,
 							$traduction->{'techtxt'}->{$xlang}
@@ -403,7 +400,6 @@ my $card = url_param('card') || '';
 				).
 				table(
 					Tr(
-						
 						td(
 							span({-name=>'com', -class=>'paragrafTitleStyle'}, $traduction->{'community'}->{$xlang}),p,
 							$traduction->{'commutxt'}->{$xlang}
@@ -412,7 +408,6 @@ my $card = url_param('card') || '';
 				).
 				table(
 					Tr(
-						
 						td({-style=>"padding-right: 20px;"},
 							span({-name=>'col', -class=>'paragrafTitleStyle'}, $traduction->{'collabos'}->{$xlang}), br, br,
 							$traduction->{'collabtxt'}->{$xlang}, br, br,
@@ -444,51 +439,28 @@ my $card = url_param('card') || '';
 			$content = br.div({-class=>'contentContainer card', -style=>'width: 970px; padding: 15px;'}, $content);
 	}
 	elsif ($xpage eq 'intro') {
-		
 		$content  = br.div({-class=>'contentContainer card', -style=>'width: 970px; margin-left: 0px; padding: 15px;'},
-			
 			span({-class=>'paragrafTitleStyle'}, $traduction->{'fulgointrotitle'}->{$xlang}), p({-style=>'text-indent: 20px'}),
-			
 			$traduction->{'fulgointro'}->{$xlang}, p({-style=>'text-indent: 20px'}),
-			
 			img({-src=>$docpath.'DSC02119.jpg', -style=>"width: 259px; height: 194px"}),
-
 			img({-src=>$docpath.'DSC02158.jpg', -style=>"width: 259px; height: 194px"}),
-
 			img({-src=>$docpath.'IMG_0492.jpg', -style=>"width: 257px; height: 194pix"}), br, br,
-
 			span({-class=>'paragrafTitleStyle'}, $traduction->{'beetitle'}->{$xlang}), p({-style=>'text-indent: 20px'}),
-			
 			$traduction->{'fulgobio'}->{$xlang}, br, br,
-
 			span({-class=>'paragrafTitleStyle'}, $traduction->{'econotitle'}->{$xlang}), p({-style=>'text-indent: 20px'}),
-			
 			$traduction->{'pests'}->{$xlang}, br, br,
-			
 			span({-class=>'paragrafTitleStyle'}, $traduction->{'fulgobiogeotitle'}->{$xlang}), p({-style=>'text-indent: 20px'}),
-			
 			$traduction->{'fulgobiogeo'}->{$xlang}, br, br,
-
 			img({-src=>$docpath.'DSC02404.jpg', -style=>"width: 150px; height: 200px; margin-right: 50px; "}),
-
 			img({-src=>$docpath.'IMG_0234.jpg', -style=>"width: 133px; height: 200px; margin-right: 50px;"}),
-
 			img({-src=>$docpath.'IMG_0380.jpg', -style=>"width: 133px; height: 200px"}), br, br,
-			
 			span({-class=>'paragrafTitleStyle'}, $traduction->{'fulgomorphotitle'}->{$xlang}), p({-style=>'text-indent: 20px'}),
-			
 			$traduction->{'fulgomorpho'}->{$xlang}, br, br,
-
 			img({-src=>$docpath.'IMG_0301.jpg', -style=>"width: 143px; height: 200px; margin-right: 50px; "}),
-
 			img({-src=>$docpath.'IMG_0469.jpg', -style=>"width: 300px; height: 200px"}), br, br,
-			
 			span({-class=>'paragrafTitleStyle'}, $traduction->{'fulgophylotitle'}->{$xlang}), p({-style=>'text-indent: 20px'}),
-			
 			$traduction->{'fulgophylo'}->{$xlang}, br, br,
-			
 			span({-class=>'paragrafTitleStyle'}, $traduction->{'refstitle'}->{$xlang}), p({-style=>'text-indent: 20px'}),
-
 			div({-style=>'position: relative; overflow: auto; height: 450px; width: 950px; margin-top: 20px; padding: 0; background: transparent;'},
 				$traduction->{'flow_refs_list'}->{$xlang}
 			)
@@ -503,10 +475,10 @@ my $card = url_param('card') || '';
 					<script type='text/javascript'>
 					// make map available for easy debugging
 					var map;
-					
+
 					// increase reload attempts
 					OpenLayers.IMAGE_RELOAD_ATTEMPTS = 3;
-					
+
 					function init(){
 						var options = {
 							projection: new OpenLayers.Projection('EPSG:900913'),
@@ -517,12 +489,12 @@ my $card = url_param('card') || '';
 							maxExtent: new OpenLayers.Bounds(-20037508, -20037508, 20037508, 20037508.34)
 						};
 						map = new OpenLayers.Map('map', options);
-						
+
 						var gsat = new OpenLayers.Layer.Google(
 						'Google Satellite',
 						{type: G_SATELLITE_MAP, 'sphericalMercator': true, numZoomLevels: 22}
 						);
-							
+
 						map.addLayers([gsap]);
 						map.zoomToMaxExtent();
 					}
@@ -531,7 +503,7 @@ my $card = url_param('card') || '';
 				);
 
 	}
-	else {		
+	else {
 		my $mnhn = a({-href=>"http://www.mnhn.fr/museum/foffice/transverse/transverse/accueil.xsp", -style=>'text-decoration: none;', -target=>'_blank'},
 					img({-src=>$docpath.'logo_mnhn.png', -alt=>"MNHN", -style=>'border: 0;', -height=>'80px'}));
 		my $upmc = a({-href=>"https://www.sorbonne-universite.fr", -style=>'text-decoration: none;', -target=>'_blank'},
@@ -553,15 +525,12 @@ my $card = url_param('card') || '';
 						),
 						$traduction->{'home_intro'}->{$xlang}, p({-style=>'text-indent: 20px'})
 					);
-		
 		$content  = br.div({-class=>'contentContainer card'}, $content . $carousel . br );
 	}
-	
+
 if (url_param('loading')) {
-		
 	my $frame = url(-path_info=>1,-query=>1);
 	$frame =~ s/;loading=1//;
-	
 	my $framecss = "overflow:hidden;overflow-x:hidden;overflow-y:hidden;height:100%;width:100%;position:absolute;top:0px;left:0px;right:0px;bottom:0px;border:none;z-index:10;";
 	$content .= div({-class=>'contentContainer'},
 		div({-id=>'loadDiv', -style=>'position: relative; top: 146px; left: 46%; z-index=11;'}, "loading...<br><br>".img({-src=>"/flowdocs/flowloading1.gif", -style=>"width: 40px;"})).
@@ -657,7 +626,7 @@ my $flags = 	span( {	-class=>'reactiveFlags',
 		).
 		div({-style=>'text-align: center;', -onMouseOver=>"this.style.cursor = 'pointer'; magicFlags('reactiveFlags', 'onMouseOver', '$xlang');", -onMouseOut=>"magicFlags('reactiveFlags', 'onMouseOut', '$xlang');"},
 			img({-src=>$docpath.'triangle.png'})
-		);	
+		);
 
 my $icons = 	div({-class=>'info', -id=>"families", -style=>'position: absolute; z-index: 10; display: none;'}, ucfirst($traduction->{'families'}->{$xlang})).
 		a({-href=>$url."?db=$xbase&page=explorer&card=families&lang=$xlang", -style=>'text-decoration: none;', -onMouseOver=>"makeBulle(this, 'families');", -onMouseOut=>"document.getElementById('families').style.display = 'none';"}, img({-src=>$docpath.'wheel/img/Fam.png', -alt=>"Families", -class=>'icon1'})). ' '.
@@ -813,12 +782,9 @@ my $fcbk = '<a href="https://www.facebook.com/FLOWwebsite" target="_blank">'.img
 	my $sm15 = a({-href=>$url."?db=$xbase&page=explorer&card=repositories&lang=$xlang", -style=>'text-decoration: none;'}, ucfirst($traduction->{'repositories'}->{$xlang}));
 	my $sm16 = a({-href=>$url."?db=$xbase&page=explorer&lang=$xlang&card=board", -style=>'text-decoration: none;'}, ucfirst($traduction->{'board'}->{$xlang}));
 	my $sm17 = a({-href=>$url."?db=$xbase&page=explorer&lang=$xlang&card=updates", -style=>'text-decoration: none;'}, ucfirst($traduction->{'lastUpdates'}->{$xlang}));
-	my $sm18 = a({-href=>"http://hemiptera.infosyslab.fr/flow/", -style=>'text-decoration: none;'}, 'FLOW');	
-#	my $sm18 = a({-href=>"http://hemiptera.infosyslab.fr/flow/", -style=>'text-decoration: none;'}, 'FLOW');	
-	my $sm19 = a({-href=>"http://hemiptera.infosyslab.fr/", -style=>'text-decoration: none;', -target=>"_blank"}, 'HemDBases');	
-#	my $sm19 = a({-href=>"http://hemiptera.infosyslab.fr/", -style=>'text-decoration: none;', -target=>"_blank"}, 'HemDBases');	
-	my $sm20 = a({-href=>"http://hemiptera.infosyslab.fr/dbtnt/", -style=>'text-decoration: none;', -target=>"_blank"}, 'DBTNT');	
-#	my $sm20 = a({-href=>"http://hemiptera.infosyslab.fr/dbtnt/", -style=>'text-decoration: none;', -target=>"_blank"}, 'DBTNT');	
+	my $sm18 = a({-href=>"http://hemiptera.infosyslab.fr/flow/", -style=>'text-decoration: none;'}, 'FLOW');
+	my $sm19 = a({-href=>"http://hemiptera.infosyslab.fr/", -style=>'text-decoration: none;', -target=>"_blank"}, 'HemDBases');
+	my $sm20 = a({-href=>"http://hemiptera.infosyslab.fr/dbtnt/", -style=>'text-decoration: none;', -target=>"_blank"}, 'DBTNT');
 	my $sm21 = '<a href="https://twitter.com/FLOWwebsite" target="_blank">Twitter</a>';
 	my $sm22 = '<a href="https://www.facebook.com/FLOWwebsite" target="_blank">Facebook</a>';
 	my $sm23 = a({-href=>$url."?db=$xbase&page=explorer&card=moleculardata&lang=$xlang", -style=>'text-decoration: none;'}, ucfirst($traduction->{'molecular_data'}->{$xlang}));
@@ -873,106 +839,67 @@ sub read_lang {
 }
 
 sub classification {
-	
 	my $conf = get_connection_params("$ENV{FLOW_CONFDIR}/flow/classif.conf");
-	
 	my $dbh = db_connection($conf);
-	
 	my $trans = read_lang($conf);
-	
 	my $order = request_tab("SELECT n.index, orthographe, fossil FROM noms AS n LEFT JOIN rangs AS r ON n.ref_rang = r.index WHERE r.en = 'order';", $dbh, 2);
 	my $classif .= span({-style=>'margin-left: 20px;'},$order->[0][1]) . br;
-	
 	my $suborders = request_tab("SELECT n.index, orthographe, fossil FROM noms AS n LEFT JOIN rangs AS r ON n.ref_rang = r.index WHERE n.ref_nom_parent = $order->[0][0] ORDER BY orthographe;", $dbh, 2);
-	
+
 	foreach my $suborder (@{$suborders}) {
-	
 		my $nom = $suborder->[1];
-		
 		if ($suborder->[2]) { $nom .= 'Â†' }
-		
 		$classif .= span({-style=>'margin-left: 40px;'},$nom) . br;
-		
 		my $infraorders = request_tab("SELECT n.index, orthographe, fossil, r.en FROM noms AS n LEFT JOIN rangs AS r ON n.ref_rang = r.index WHERE n.ref_nom_parent = $suborder->[0] ORDER BY orthographe;", $dbh, 2);
-		
+
 		foreach my $infraorder (@{$infraorders}) {
-		
 			if ($infraorder->[3] eq 'infraorder') {
-				
 				$nom = $infraorder->[1];
-				
 				if ($infraorder->[2]) { $nom .= 'Â†' }
-				
 				$classif .= span({-style=>'margin-left: 60px;'},$nom) . br;
-				
 				my $sons = request_tab("SELECT n.index, orthographe, fossil, r.en FROM noms AS n LEFT JOIN rangs AS r ON n.ref_rang = r.index WHERE n.ref_nom_parent = $infraorder->[0] ORDER BY orthographe;", $dbh, 2);
-				
 				foreach my $son (@{$sons}) {
-				
 					if ($son->[3] eq 'super family') {
-						
 						$nom = $son->[1];
-						
 						if ($son->[2]) { $nom .= 'Â†' }
-						
 						$classif .=span({-style=>'margin-left: 80px;'},$nom) . br;
-						
 						my $families = request_tab("SELECT n.index, orthographe, fossil, r.en FROM noms AS n LEFT JOIN rangs AS r ON n.ref_rang = r.index WHERE n.ref_nom_parent = $son->[0] ORDER BY orthographe;", $dbh, 2);
-						
 						foreach my $family (@{$families}) {
-							
 							$nom = $family->[1];
-							
 							if ($family->[2]) { $nom .= 'Â†' }
-							
 							$classif .= span({-style=>'margin-left: 100px;'},$nom) . br;
 						}
 					}
 					elsif ($son->[3] eq 'family') {
-						
 						$nom = $son->[1];
-						
 						if ($son->[2]) { $nom .= 'Â†' }
-						
 						$classif .= span({-style=>'margin-left: 100px;'},$nom) . br;
 					}
 				}
 			}
 			elsif ($infraorder->[3] eq 'super family') {
-				
 				$nom = $infraorder->[1];
-				
 				if ($infraorder->[2]) { $nom .= 'Â†' }
-				
 				$classif .= span({-style=>'margin-left: 80px;'},$nom) . br;
-				
 				my $families = request_tab("SELECT n.index, orthographe, fossil, r.en FROM noms AS n LEFT JOIN rangs AS r ON n.ref_rang = r.index WHERE n.ref_nom_parent = $infraorder->[0] ORDER BY orthographe;", $dbh, 2);
-			
 				foreach my $family (@{$families}) {
-					
 					$nom = $family->[1];
-					
 					if ($family->[2]) { $nom .= 'Â†' }
-					
 					$classif .= span({-style=>'margin-left: 100px;'},$nom) . br;
 				}
 			}
 		}
 	}
-	
+
 	$classif .= p . span({-style=>'margin-left: 20px;'},"Incertae sedis") . br;
-				
 	my $incertae = request_tab("SELECT n.index, orthographe, fossil FROM noms AS n LEFT JOIN rangs AS r ON n.ref_rang = r.index WHERE r.en = 'incertae sedis' ORDER BY orthographe;", $dbh, 2);
-	
+
 	foreach my $insed (@{$incertae}) {
-		
 		my $nom = $insed->[1];
-		
 		if ($insed->[2]) { $nom .= 'Â†' }
-		
 		$classif .= span({-style=>'margin-left: 40px;'},$nom) . br;
 	}
-			
+
 	my $content = h2({-style=>'margin-left: 20px'}, "Hemiptera classification"). br. $classif;
 }
 
