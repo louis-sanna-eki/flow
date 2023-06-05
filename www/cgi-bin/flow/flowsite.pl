@@ -18,19 +18,19 @@ use open ':std', ':encoding(UTF-8)';
 my $url = url();
 $| = 1;
 
-# variables de navigation
-my $xbase;
-my $xpage; 
-my $xlang;
 my $script;
 my $test = '<div id="testDiv"></div>';
-if (url_param('db')) { $xbase = url_param('db'); } else { $xbase = 'flow'; }
-if (url_param('page')) { $xpage = url_param('page'); } else { $xpage = 'home'; }
-if (url_param('lang')) { $xlang = url_param('lang'); } else { $xlang = 'en'; }
+
+
+# variables de navigation
+my $xbase       = url_param('db')      || 'flow';
+my $xpage       = url_param('page')    || 'home';
+my $xlang       = url_param('lang')    || 'en';
+
 my $searchtable = param('searchtable') || 'noms_complets';
-my $searchid = param('searchid');
+my $searchid    = param('searchid');
 Delete('searchid');
-my $docpath = '/flowdocs/';
+my $docpath     = '/flowdocs/';
 
 my $analytics =<<END;
 
@@ -157,13 +157,6 @@ my $onload = <<_EOJS_;
   AutoComplete_Create('auteurs', auteurs, auteursids, '', 10);
   AutoComplete_Create('pays', pays, paysids, '', 10);
 _EOJS_
-
-
-# régénération automatique du fichier "search_flow.js", toutes les 30 min.
-my $searchjs_last_write_time = (stat $searchjs)[9]
-  or die "Can't stat file $searchjs";
-generate_searchjs_file($searchjs, $dbc, $xlang)
-  if time - $searchjs_last_write_time >= 1800 or url_param('reload');
 
 
 my $header = header({-Type=>'text/html', -Charset=>'UTF-8'}).
