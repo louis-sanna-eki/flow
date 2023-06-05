@@ -30,7 +30,7 @@ my $searchid    = param('searchid');
 Delete('searchid');
 my $docpath     = '/flowdocs/';
 
-my $analytics =<<_EOJS_;
+my $analytics = <<_EOJS_;
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
@@ -38,27 +38,28 @@ my $analytics =<<_EOJS_;
 _EOJS_
 
 
-my $iconMouseOver = "	
-	function findPosII(obj) {
-		var curleft = curtop = 0;
-		var strleft = strtop = '';
-		if (obj.offsetParent) {
-			do {
-				if (obj.tagName != 'TABLE') { curleft += obj.offsetLeft; }
-				curtop += obj.offsetTop;
-				strleft += obj.tagName + ':' + obj.offsetLeft + '<br>';
-				strtop += obj.tagName + ':' + obj.offsetTop + '<br>';
-			} while (obj = obj.offsetParent);
-		}
-		return [curleft,curtop,strleft,strtop];
-	}
-	function makeBulle (myelem, myid) {
-		var bulle = document.getElementById(myid);
-		var pos = findPosII(myelem);
-		bulle.style.left = pos[0] + 30 + 'px';
-		bulle.style.top = pos[1] - 9 + 'px';
-		bulle.style.display = 'block';
-	}";
+my $iconMouseOver =  <<_EOJS_;
+        function findPosII(obj) {
+                var curleft = curtop = 0;
+                var strleft = strtop = '';
+                if (obj.offsetParent) {
+                        do {
+                                if (obj.tagName != 'TABLE') { curleft += obj.offsetLeft; }
+                                curtop += obj.offsetTop;
+                                strleft += obj.tagName + ':' + obj.offsetLeft + '<br>';
+                                strtop += obj.tagName + ':' + obj.offsetTop + '<br>';
+                        } while (obj = obj.offsetParent);
+                }
+                return [curleft,curtop,strleft,strtop];
+        }
+        function makeBulle (myelem, myid) {
+                var bulle = document.getElementById(myid);
+                var pos = findPosII(myelem);
+                bulle.style.left = pos[0] + 30 + 'px';
+                bulle.style.top = pos[1] - 9 + 'px';
+                bulle.style.display = 'block';
+        }
+_EOJS_
 
 my $pagetitle = "FLOW Website";
 
@@ -80,39 +81,43 @@ my $searchjs = $docfullpath.$config->{'SEARCHJS'};
 
 my %types = (
 	'noms_complets' => $traduction->{sciname}->{$xlang},
-	'auteurs' => $traduction->{author}->{$xlang},
-	'pays' => $traduction->{country}->{$xlang}
+	'auteurs'       => $traduction->{author}->{$xlang},
+	'pays'          => $traduction->{country}->{$xlang},
 );
 
-my $search_actions = "
-	function clear_search_except(from, identity) {
-		var identities = new Array('".join("','", sort {$types{$a} cmp $types{$b}} keys(%types))."');
-		var valeur;
-		for (index in identities) {
-			if (document.getElementById(identities[index]).value) { valeur = document.getElementById(identities[index]).value; }
-			if (identities[index] != identity) {
-				document.getElementById(identities[index]).style.visibility = 'hidden';
-			}
-			else {
-				document.getElementById(identities[index]).style.visibility = 'visible';
-			}
-			document.getElementById(identities[index]).value = '".ucfirst($traduction->{search}->{$xlang})."';
-		}
-		if (from == 'popup') {
-			if (valeur) {
-				document.getElementById(identity).value = valeur;
-				document.getElementById(identity).focus();
-			}
-		}
-	}
-";
+
+my $type_names = join ",", map {"'$_'"} sort {$types{$a} cmp $types{$b}} keys %types;
+my $search_id  = ucfirst($traduction->{search}->{$xlang});
+
+my $search_actions = <<_EOJS_;
+        function clear_search_except(from, identity) {
+                var identities = new Array($type_names);
+                var valeur;
+                for (index in identities) {
+                        if (document.getElementById(identities[index]).value) { valeur = document.getElementById(identities[index]).value; }
+                        if (identities[index] != identity) {
+                                document.getElementById(identities[index]).style.visibility = 'hidden';
+                        }
+                        else {
+                                document.getElementById(identities[index]).style.visibility = 'visible';
+                        }
+                        document.getElementById(identities[index]).value = '$search_id';
+                }
+                if (from == 'popup') {
+                        if (valeur) {
+                                document.getElementById(identity).value = valeur;
+                                document.getElementById(identity).focus();
+                        }
+                }
+        }
+_EOJS_
 
 my $typdef = $searchtable;
 
 my %attributes = (
 	'noms_complets' => {'class'=>'searchOption'},
-	'auteurs' => {'class'=>'searchOption'},
-	'pays' => {'class'=>'searchOption'}
+	'auteurs'       => {'class'=>'searchOption'},
+	'pays'          => {'class'=>'searchOption'},
 );
 
 my $search = url_param('search') || '';
@@ -130,6 +135,22 @@ my $onload = <<_EOJS_;
   AutoComplete_Create('auteurs', auteurs, auteursids, '', 10);
   AutoComplete_Create('pays', pays, paysids, '', 10);
 _EOJS_
+
+
+my @js_scripts = ("${docpath}browserdetect.js",
+                  'https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js',
+                  "${docpath}SearchAutoComplete_utf8.js",
+                  "${docpath}javascriptFuncs.js",
+                  "${docpath}$config->{SEARCHJS}",
+                  "${docpath}js/jquery-1.11.0.min.js",
+                  "${docpath}js/mouseScrolling.js",
+                  "${docpath}js/jquery.infinitecarousel2_0_2.js",
+                  "/explorerdocs/js/json2.js",
+                  "/explorerdocs/js/OpenLayers-2.13.1/OpenLayers.js",
+                  "/explorerdocs/js/compositeMaps.js",
+                  "/explorerdocs/js/cs_script.js",
+                  "https://www.googletagmanager.com/gtag/js?id=UA-21288992-1");
+
 
 
 my $header = header({-Type=>'text/html', -Charset=>'UTF-8'}).
@@ -162,24 +183,10 @@ my $header = header({-Type=>'text/html', -Charset=>'UTF-8'}).
 						],
 			-base => 'true',
 			-target => '_parent',
-			-script => 	[
-						{-language=>'JAVASCRIPT', -src=>$docpath.'browserdetect.js'},
-						{-language=>'JAVASCRIPT', -src=>'https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js'},
-						{-language=>'JAVASCRIPT',-src=>$docpath.'SearchAutoComplete_utf8.js'},
-						{-language=>'JAVASCRIPT',-src=>$docpath.'javascriptFuncs.js'},
-						{-language=>'JAVASCRIPT',-src=>$docpath.$config->{'SEARCHJS'}},
-						{-language=>'JAVASCRIPT',-src=>$docpath.'js/jquery-1.11.0.min.js'},
-						{-language=>'JAVASCRIPT',-src=>$docpath.'js/mouseScrolling.js'},
-						{-language=>'JAVASCRIPT',-src=>$docpath.'js/jquery.infinitecarousel2_0_2.js'},
-						{-language=>'JAVASCRIPT',-src=>'/explorerdocs/js/json2.js'},
-						{-language=>'JAVASCRIPT',-src=>'/explorerdocs/js/OpenLayers-2.13.1/OpenLayers.js'},
-						{-language=>'JAVASCRIPT',-src=>'/explorerdocs/js/compositeMaps.js'},
-						{-language=>'JAVASCRIPT',-src=>'/explorerdocs/js/cs_script.js'},
-						{-language=>'JAVASCRIPT',-src=>'https://www.googletagmanager.com/gtag/js?id=UA-21288992-1'},
-
-						$analytics,
-						$search_actions,
-						$iconMouseOver
+			-script => 	[ (map { {-language=>'JAVASCRIPT', -src=>$_} } @js_scripts),
+                                          $analytics,
+                                          $search_actions,
+                                          $iconMouseOver,
 					],
 			-onLoad	=> "	clear_search_except('onload', '$typdef');
 					$onload
@@ -226,48 +233,46 @@ my @photos = ('Tropiduchidae', 'Tropiduchidae 2', 'Trienopa typica', 'Tettigomet
               'Dendrokara monstrosa 1', 'Conomelus lorifer', 'Cixiidae', 'Chlorionidea flava', 'Carthaeomorpha
               rufipes', 'Caliscelis bonellii', 'Asiraca clavicornis', 'Anotia sp');
 
-my $phts = join "", map {  qq{<li><img alt="FLOW planthopper fulgoroidea fulgoromorpha insect"
+my $phts = join "\n", map {  qq{<li><img alt="FLOW planthopper fulgoroidea fulgoromorpha insect"
                                        src="/flowfotos/carousel/thumbnails/${_}.png"
                                        height="150" width="200"
                                        onMouseOver="this.style.cursor='pointer'"
                                        onclick="ImageMax('/flowfotos/carousel/1280/${_}.jpg')"/></li>} } @photos;
 
-my $carousel = <<_EOHTML_;
-<script type='text/javascript'>
-  $(function(){
-        $("#carousel").infiniteCarousel({
-                transitionSpeed: 4000,
-                displayTime: 0,
-                displayProgressBar: false,
-                displayThumbnails: false,
-                displayThumbnailNumbers: false,
-                displayThumbnailBackground: false,
-                imagePath: "",
-                easeLeft: "linear",
-                easeRight: "linear",
-                inView: 5,
-                padding: "0px",
-                advance: 1,
-                showControls: false,
-                autoHideControls: false,
-                autoHideCaptions: false,
-                autoStart: true,
-                prevNextInternal: true
-        });
-        $("div.thumb").parent().css({"margin":"0 auto","width":"900px"});
-  });
-  function ImageMax(chemin) {
-    var html = '<html><body><img src=".'"'."'+chemin+'".'"'." border=0 height=\"900\"/></body></html>';
-    var popupImage = window.open('','_blank','toolbar=0, location=0, scrollbars=0, directories=0, status=0, resizable=1');
-    popupImage.document.open();
-    popupImage.document.write(html);
-    popupImage.document.close();
-  };
-</script>
-<div id='carousel' style='width: 900px;'>
-  <ul>$phts</ul>
-</div>
-_EOHTML_
+my $carousel = q{
+    <script type='text/javascript'>
+      $(function(){
+            $("#carousel").infiniteCarousel({
+                    transitionSpeed: 4000,
+                    displayTime: 0,
+                    displayProgressBar: false,
+                    displayThumbnails: false,
+                    displayThumbnailNumbers: false,
+                    displayThumbnailBackground: false,
+                    imagePath: "",
+                    easeLeft: "linear",
+                    easeRight: "linear",
+                    inView: 5,
+                    padding: "0px",
+                    advance: 1,
+                    showControls: false,
+                    autoHideControls: false,
+                    autoHideCaptions: false,
+                    autoStart: true,
+                    prevNextInternal: true
+            });
+            $("div.thumb").parent().css({"margin":"0 auto","width":"900px"});
+      });
+      function ImageMax(chemin) {
+	var html = '<html><body><img src="'+chemin+'" border=0 height="900"/></body></html>';
+        var popupImage = window.open('','_blank','toolbar=0, location=0, scrollbars=0, directories=0, status=0, resizable=1');
+        popupImage.document.open();
+        popupImage.document.write(html);
+        popupImage.document.close();
+      };
+    </script>
+  } . qq{<div id='carousel' style='width: 900px;'><ul>$phts</ul></div>};
+
 
 #======================================================================
 
