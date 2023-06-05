@@ -3,8 +3,6 @@
 use strict;
 use CGI qw/:standard/;
 use CGI::Carp qw( fatalsToBrowser ); # display errors in browser
-#SOFIZ comment
-#use CGI::ProgressBar qw/:standard/;
 use DBCommands qw (get_connection_params db_connection request_hash request_tab request_row get_title);
 use URI::Escape;
 use JSON::XS;
@@ -538,15 +536,11 @@ my $card = url_param('card') || '';
 					img({-src=>$docpath.'logo_mnhn.png', -alt=>"MNHN", -style=>'border: 0;', -height=>'80px'}));
 		my $upmc = a({-href=>"https://www.sorbonne-universite.fr", -style=>'text-decoration: none;', -target=>'_blank'},
 					img({-src=>$docpath.'sorbone_university.png', -alt=>"UPMC", -style=>'border: 0;', -height=>'60px'}));
-#		my $dbtnt = a({-href=>"http://hemiptera.infosyslab.fr/dbtnt/", -style=>'text-decoration: none;', -target=>'_blank'},
 		my $dbtnt = a({-href=>"http://infosyslab.mnhn.fr/dbtnt/", -style=>'text-decoration: none;', -target=>'_blank'},
 					img({-src=>'/dbtnt/images/logo.png', -alt=>"DBTNT", -style=>'border: 0;', -height=>'40px'}));
 		$dbtnt = '';
-		$content = 	#img({-class=>'rotate30', -src=>"/explorerdocs/CoLprize.png", -style=>'float: right; width: 175px; margin-top: -2px; margin-left: 8px;', title=>'CoL FLOW'}).						
-					div({-style=>'text-align: center;'},
-						#img({-src=>'flowWave.png', -alt=>"FLOW", -style=>"margin-top: 0 auto; padding: 20px 0 20px 0;"}),
+		$content = 		div({-style=>'text-align: center;'},
 						br,
-						#div({-class=>'rotate30 tampon', -style=>'color: red; border-color: red;'}, "<br>Suprageneric taxa synopsis <br>now available<br>". img({-src=>"/explorerdocs/stats.png", -style=>'width: 28px; margin-top: 5px;', title=>'Taxon synopsis'}) ),
 						table({-border=>0}, 
 							Tr(	td({-style=>'width: 300px; text-align: center;'},$mnhn), 
 								td({-style=>'width: 400px; text-align: center; font-size: 66px;', -rowspan=>2}, 'FLOW'), 
@@ -580,7 +574,6 @@ foreach (url_param()) { if ($_ ne 'lang') { push(@argus, $_.'='.url_param($_)) }
 
 my $logo = a({-href=>"$url?db=$xbase&page=home&lang=$xlang", -style=>'text-decoration: none;'}, img({-src=>$docpath.'logoFLOW.png', -alt=>"FLOW", -style=>'border: 0;', -height=>'46px'}));
 
-#$logo .= ' &nbsp;'.a({-href=>"http://www.charliehebdo.fr/index.html", -style=>'text-decoration: none;'}, img({-src=>$docpath.'jsc.png', -alt=>"Charlie Hebdo", -style=>'border: 0;', -height=>'46px'}));
 
 my @dd = ('none') x 6;
 my @langs = ('en','fr','es','de','zh','pt');
@@ -701,14 +694,7 @@ my $icons = 	div({-class=>'info', -id=>"families", -style=>'position: absolute; 
         div({-class=>'info', -id=>"molecular", -style=>'position: absolute; z-index: 10; display: none;'}, ucfirst($traduction->{'molecular_data'}->{$xlang})).
         a({	-href=>$url."?db=$xbase&page=explorer&card=molecular&lang=$xlang", -style=>'text-decoration: none;', -onMouseOver=>"makeBulle(this, 'molecular');", -onMouseOut=>"document.getElementById('molecular').style.display = 'none';"} , img({-src=>$docpath.'/wheel/img/molecule_flow.png', -alt=>"Molecular data", -class=>'icon1'})). ' ';
 
-#my $icons2 = 	p({-style=>'margin: 0 0 3px 0;'}, a({-href=>"$url?db=$xbase&page=project&lang=$xlang", -style=>'text-decoration: none;'}, img({-src=>$docpath.'wheel/img/project.png', -alt=>"Project", -class=>'icon2'}))).
-#		p({-style=>'margin: 0 0 3px 0;'}, a({-href=>"$url?db=$xbase&page=intro&lang=$xlang", -style=>'text-decoration: none;'}, img({-src=>$docpath.'wheel/img/fulgo.png', -alt=>"Fulgoromorpha", -class=>'icon2'})));
-#		p({-style=>'margin: 0 0 3px 0;'}, a({-href=>"classif.pl", -style=>'text-decoration: none;'}, img({-src=>$docpath.'wheel/img/classif.png', -alt=>"Classification", -class=>'icon2'})));
 
-
-#if (url_param('test')) { 
-#$test = "$searchid, $searchtable"; 
-#}
 my $msgbody = 
 "Thank you for using FLOW. You want to report a problem with this page or you want to complete the data: any complementary information/data and correction are very welcome, but only published ones can be considered. 
 So please provide the references of your sources. ";
@@ -775,10 +761,6 @@ my $arrow;
 
 Delete('hiddensearch');
 
-#my $twit =<<EOS;
-#<a href="https://twitter.com/FLOWwebsite" class="twitter-follow-button" data-show-count="false"></a>
-#<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-#EOS
 
 my $twit = '<a href="https://twitter.com/FLOWwebsite" target="_blank">'.img({-src=>$docpath."twiter.png", alt=>"Twitter", height=>'20px'}).'</a>';
 my $fcbk = '<a href="https://www.facebook.com/FLOWwebsite" target="_blank">'.img({-src=>$docpath."facebook.png", alt=>"Facebook", height=>'20px'}).'</a>';
@@ -798,12 +780,6 @@ my $fcbk = '<a href="https://www.facebook.com/FLOWwebsite" target="_blank">'.img
 	print	"				<TD id='flagsCell'>";
 	print						div ({-id=>'flagsDiv'}, $flags);
 	print	"				</TD>";
-	#print	"				<TD id='moreFlagsCell'>";
-	#print							img({	-src=>'moreFlags.png',
-    #									-id=>'moreFlagsImg',
-	#								-onMouseOver=>"magicFlags('reactiveFlags', 'onMouseOver', '$xlang');",
-	#								-onMouseOut=>"this.style.cursor='pointer'; magicFlags('reactiveFlags', 'onMouseOut', '$xlang');"});
-	#print	"				</TD>";
 	print	"			</TR>";
 	print	"			<TR>";
 	print	"				<TD ID='searchCell' colspan=2>";
@@ -812,15 +788,6 @@ my $fcbk = '<a href="https://www.facebook.com/FLOWwebsite" target="_blank">'.img
 	print	"			</TR>";
 	print	"		</TABLE>";
 	
-	#if ($xpage ne 'explorer') {
-	#	print	"	<TABLE id='leftIcons'>";
-	#	print	"		<TR>";
-	#	print	"			<TD id='projectCell'>";
-	#	print	"				$icons2";
-	#	print	"			</TD>";
-	#	print	"		</TR>";
-	#	print "		</TABLE>";
-	#}
 
 	print $content;
 	if ($xpage eq 'explorer' and !url_param('loading')) {
@@ -881,7 +848,6 @@ my $fcbk = '<a href="https://www.facebook.com/FLOWwebsite" target="_blank">'.img
 	print	"</DIV>";
 
 print	end_html();
-#print hide_progress_bar;
 
 $dbc->disconnect;
 
