@@ -194,14 +194,12 @@ my $header = header({-Type=>'text/html', -Charset=>'UTF-8'}).
 						{-language=>'JAVASCRIPT',-src=>$docpath.'javascriptFuncs.js'},
 						{-language=>'JAVASCRIPT',-src=>$docpath.$config->{'SEARCHJS'}},
 						{-language=>'JAVASCRIPT',-src=>$docpath.'js/jquery-1.11.0.min.js'},
-						#jompo; la ligne suivante etait avant et generait une erreur pour mouseScrolling qui etait appele avant jquery ;-)
 						{-language=>'JAVASCRIPT',-src=>$docpath.'js/mouseScrolling.js'},
 						{-language=>'JAVASCRIPT',-src=>$docpath.'js/jquery.infinitecarousel2_0_2.js'},
 						{-language=>'JAVASCRIPT',-src=>'/explorerdocs/js/json2.js'},
 						{-language=>'JAVASCRIPT',-src=>'/explorerdocs/js/OpenLayers-2.13.1/OpenLayers.js'},
 						{-language=>'JAVASCRIPT',-src=>'/explorerdocs/js/compositeMaps.js'},
 						{-language=>'JAVASCRIPT',-src=>'/explorerdocs/js/cs_script.js'},
-						#{-language=>'JAVASCRIPT',-src=>'/explorerdocs/js/pace.js'},
 						{-language=>'JAVASCRIPT',-src=>'https://www.googletagmanager.com/gtag/js?id=UA-21288992-1'},
 
 						$analytics,
@@ -238,59 +236,24 @@ foreach my $key (sort {$types{$a} cmp $types{$b}} keys(%types)) {
 
 my $carousel;
 
-#if (url_param('test')) {
 
-my %photos = (
+my @photos = ('Tropiduchidae', 'Tropiduchidae 2', 'Trienopa typica', 'Tettigometra laeta', 'Tachycixius venustulus',
+              'Reptalus panzeri', 'Ranissus egerneus', 'Pterodictya reticularis', 'Plectoderes scapularis',
+              'Plectoderes flavovittata', 'Phrictus cf tripartitus', 'Phrictus cf tripartitus 2', 'Parorgerius
+              platypus', 'Ormenis sp', 'Omolicna sp', 'Oeclidius browni', 'Odontoptera carrenoi', 'Noabennarella
+              costaricensis', 'Meenoplus albosignatus', 'Lappida sp', 'Issidae', 'Hemisphaerius sp', 'Fulgoroidea',
+              'Fulgoroidea 2', 'Fulgora cf laternaria 2', 'Fulgora cf laternaria 1', 'Flatidae', 'Fipsianus
+              andreae', 'Eurybregma nigrolineata', 'Epibidis sp', 'Enchophora prasina', 'Dictyophara europaea
+              rosea', 'Dictyophara europaea 2', 'Dictyophara europaea 1', 'Derbidae', 'Dendrokara monstrosa 2',
+              'Dendrokara monstrosa 1', 'Conomelus lorifer', 'Cixiidae', 'Chlorionidea flava', 'Carthaeomorpha
+              rufipes', 'Caliscelis bonellii', 'Asiraca clavicornis', 'Anotia sp');
 
-'Tropiduchidae' => 1,
-'Tropiduchidae 2' => 1,
-'Trienopa typica' => 1,
-'Tettigometra laeta' => 1,
-'Tachycixius venustulus' => 1,
-'Reptalus panzeri' => 1,
-'Ranissus egerneus' => 1,
-'Pterodictya reticularis' => 1,
-'Plectoderes scapularis' => 1,
-'Plectoderes flavovittata' => 1,
-'Phrictus cf tripartitus' => 1,
-'Phrictus cf tripartitus 2' => 1,
-'Parorgerius platypus' => 1,
-'Ormenis sp' => 1,
-'Omolicna sp' => 1,
-'Oeclidius browni' => 1,
-'Odontoptera carrenoi' => 1,
-'Noabennarella costaricensis' => 1,
-'Meenoplus albosignatus' => 1,
-'Lappida sp' => 1,
-'Issidae' => 1,
-'Hemisphaerius sp' => 1,
-'Fulgoroidea' => 1,
-'Fulgoroidea 2' => 1,
-'Fulgora cf laternaria 2' => 1,
-'Fulgora cf laternaria 1' => 1,
-'Flatidae' => 1,
-'Fipsianus andreae' => 1,
-'Eurybregma nigrolineata' => 1,
-'Epibidis sp' => 1,
-'Enchophora prasina' => 1,
-'Dictyophara europaea rosea' => 1,
-'Dictyophara europaea 2' => 1,
-'Dictyophara europaea 1' => 1,
-'Derbidae' => 1,
-'Dendrokara monstrosa 2' => 1,
-'Dendrokara monstrosa 1' => 1,
-'Conomelus lorifer' => 1,
-'Cixiidae' => 1,
-'Chlorionidea flava' => 1,
-'Carthaeomorpha rufipes' => 1,
-'Caliscelis bonellii' => 1,
-'Asiraca clavicornis' => 1,
-'Anotia sp' => 1
+my $phts = join "", map {  qq{<li><img alt="FLOW planthopper fulgoroidea fulgoromorpha insect"
+                                       src="/flowfotos/carousel/thumbnails/${_}.png"
+                                       height="150" width="200"
+                                       onMouseOver="this.style.cursor='pointer'"
+                                       onclick="ImageMax('/flowfotos/carousel/1280/${_}.jpg')"/></li>} } @photos;
 
-);
-
-my $phts;
-foreach (keys(%photos)) { $phts .= '<li><img alt="FLOW planthopper fulgoroidea fulgoromorpha insect" src="/flowfotos/carousel/thumbnails/'.$_.'.png" height="150" width="200" onMouseOver="this.style.cursor=\'pointer\';" onclick="ImageMax(\'/flowfotos/carousel/1280/'.$_.'.jpg\');"/></li>'; }
 
 $carousel ="<script type='text/javascript'>".
 '$(function(){
