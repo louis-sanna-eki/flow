@@ -222,16 +222,50 @@ foreach my $key (sort {$types{$a} cmp $types{$b}} keys(%types)) {
 # Carrousel de photos
 #======================================================================
 
-my @photos = ('Tropiduchidae', 'Tropiduchidae 2', 'Trienopa typica', 'Tettigometra laeta', 'Tachycixius venustulus',
-              'Reptalus panzeri', 'Ranissus egerneus', 'Pterodictya reticularis', 'Plectoderes scapularis',
-              'Plectoderes flavovittata', 'Phrictus cf tripartitus', 'Phrictus cf tripartitus 2', 'Parorgerius
-              platypus', 'Ormenis sp', 'Omolicna sp', 'Oeclidius browni', 'Odontoptera carrenoi', 'Noabennarella
-              costaricensis', 'Meenoplus albosignatus', 'Lappida sp', 'Issidae', 'Hemisphaerius sp', 'Fulgoroidea',
-              'Fulgoroidea 2', 'Fulgora cf laternaria 2', 'Fulgora cf laternaria 1', 'Flatidae', 'Fipsianus
-              andreae', 'Eurybregma nigrolineata', 'Epibidis sp', 'Enchophora prasina', 'Dictyophara europaea
-              rosea', 'Dictyophara europaea 2', 'Dictyophara europaea 1', 'Derbidae', 'Dendrokara monstrosa 2',
-              'Dendrokara monstrosa 1', 'Conomelus lorifer', 'Cixiidae', 'Chlorionidea flava', 'Carthaeomorpha
-              rufipes', 'Caliscelis bonellii', 'Asiraca clavicornis', 'Anotia sp');
+my @photos = ('Tropiduchidae',
+              'Tropiduchidae 2',
+              'Trienopa typica',
+              'Tettigometra laeta',
+              'Tachycixius venustulus',
+              'Reptalus panzeri',
+              'Ranissus egerneus',
+              'Pterodictya reticularis',
+              'Plectoderes scapularis',
+              'Plectoderes flavovittata',
+              'Phrictus cf tripartitus',
+              'Phrictus cf tripartitus 2',
+              'Parorgerius platypus',
+              'Ormenis sp',
+              'Omolicna sp',
+              'Oeclidius browni',
+              'Odontoptera carrenoi',
+              'Noabennarella costaricensis',
+              'Meenoplus albosignatus',
+              'Lappida sp',
+              'Issidae',
+              'Hemisphaerius sp',
+              'Fulgoroidea',
+              'Fulgoroidea 2',
+              'Fulgora cf laternaria 2',
+              'Fulgora cf laternaria 1',
+              'Flatidae',
+              'Fipsianus andreae',
+              'Eurybregma nigrolineata',
+              'Epibidis sp',
+              'Enchophora prasina',
+              'Dictyophara europaea rosea',
+              'Dictyophara europaea 2',
+              'Dictyophara europaea 1',
+              'Derbidae',
+              'Dendrokara monstrosa 2',
+              'Dendrokara monstrosa 1',
+              'Conomelus lorifer',
+              'Cixiidae',
+              'Chlorionidea flava',
+              'Carthaeomorpha rufipes',
+              'Caliscelis bonellii',
+              'Asiraca clavicornis',
+              'Anotia sp');
 
 my $phts = join "\n", map {  qq{<li><img alt="FLOW planthopper fulgoroidea fulgoromorpha insect"
                                        src="/flowfotos/carousel/thumbnails/${_}.png"
