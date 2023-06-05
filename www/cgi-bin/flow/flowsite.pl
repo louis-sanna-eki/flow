@@ -58,6 +58,8 @@ my $analytics =<<END;
 	ga('send', 'pageview');*/
 
 END
+
+
 my $iconMouseOver = "	
 	function findPosII(obj) {
 		var curleft = curtop = 0;
@@ -66,10 +68,8 @@ my $iconMouseOver = "
 			do {
 				if (obj.tagName != 'TABLE') { curleft += obj.offsetLeft; }
 				curtop += obj.offsetTop;
-				
 				strleft += obj.tagName + ':' + obj.offsetLeft + '<br>';
 				strtop += obj.tagName + ':' + obj.offsetTop + '<br>';
-			
 			} while (obj = obj.offsetParent);
 		}
 		return [curleft,curtop,strleft,strtop];
@@ -80,9 +80,6 @@ my $iconMouseOver = "
 		bulle.style.left = pos[0] + 30 + 'px';
 		bulle.style.top = pos[1] - 9 + 'px';
 		bulle.style.display = 'block';
-		/*if (window.location.toString().search('test=1') > 0) {
-			document.getElementById('testDiv').innerHTML = pos[2] + pos[3];
-		}*/
 	}";
 
 my $pagetitle = "FLOW Website";
@@ -234,8 +231,11 @@ foreach my $key (sort {$types{$a} cmp $types{$b}} keys(%types)) {
 	$z++;
 }
 
-my $carousel;
 
+
+#======================================================================
+# Carrousel de photos
+#======================================================================
 
 my @photos = ('Tropiduchidae', 'Tropiduchidae 2', 'Trienopa typica', 'Tettigometra laeta', 'Tachycixius venustulus',
               'Reptalus panzeri', 'Ranissus egerneus', 'Pterodictya reticularis', 'Plectoderes scapularis',
@@ -254,62 +254,61 @@ my $phts = join "", map {  qq{<li><img alt="FLOW planthopper fulgoroidea fulgoro
                                        onMouseOver="this.style.cursor='pointer'"
                                        onclick="ImageMax('/flowfotos/carousel/1280/${_}.jpg')"/></li>} } @photos;
 
-
-$carousel ="<script type='text/javascript'>".
-'$(function(){
-	$("#carousel").infiniteCarousel({
-		transitionSpeed: 4000,
-		displayTime: 0,
-		displayProgressBar: false,
-		displayThumbnails: false,
-		displayThumbnailNumbers: false,
-		displayThumbnailBackground: false,
-		imagePath: "",
-		easeLeft: "linear",
-		easeRight: "linear",
-		inView: 5,
-		padding: "0px",
-		advance: 1,
-		showControls: false,
-		autoHideControls: false,
-		autoHideCaptions: false,
-		autoStart: true,
-		prevNextInternal: true
-	});
-	$("div.thumb").parent().css({"margin":"0 auto","width":"900px"});
-});'.
-"function ImageMax(chemin) {
-	var html = '<html><body><img src=".'"'."'+chemin+'".'"'." border=0 height=\"900\"/></body></html>';
-	var popupImage = window.open('','_blank','toolbar=0, location=0, scrollbars=0, directories=0, status=0, resizable=1');
-	popupImage.document.open();
-	popupImage.document.write(html);
-	popupImage.document.close();
-};".
-"</script>
-
+my $carousel = <<_EOHTML_;
+<script type='text/javascript'>
+  $(function(){
+        $("#carousel").infiniteCarousel({
+                transitionSpeed: 4000,
+                displayTime: 0,
+                displayProgressBar: false,
+                displayThumbnails: false,
+                displayThumbnailNumbers: false,
+                displayThumbnailBackground: false,
+                imagePath: "",
+                easeLeft: "linear",
+                easeRight: "linear",
+                inView: 5,
+                padding: "0px",
+                advance: 1,
+                showControls: false,
+                autoHideControls: false,
+                autoHideCaptions: false,
+                autoStart: true,
+                prevNextInternal: true
+        });
+        $("div.thumb").parent().css({"margin":"0 auto","width":"900px"});
+  });
+  function ImageMax(chemin) {
+    var html = '<html><body><img src=".'"'."'+chemin+'".'"'." border=0 height=\"900\"/></body></html>';
+    var popupImage = window.open('','_blank','toolbar=0, location=0, scrollbars=0, directories=0, status=0, resizable=1');
+    popupImage.document.open();
+    popupImage.document.write(html);
+    popupImage.document.close();
+  };
+</script>
 <div id='carousel' style='width: 900px;'>
-	<ul>
-		$phts
-	</ul>
-</div>";
+  <ul>$phts</ul>
+</div>
+_EOHTML_
 
-#}
+#======================================================================
+
 
 # varibales globales pour tout site		
 my ($html, $bandeau, @menus,%submenus,%menulinks, @menuSpaces, $activepage, $content);
 
 ## LE CONTENU ##################################
 my $card = url_param('card') || '';
-#if ($xbase eq 'flow') {
+
 	if ($xpage eq 'explorer') {
-		
+
 		my $param;
 		if ($param = url_param('db')) { $args .= " -db=$param " }
 		if ($param = url_param('card')) { $args .= " -card=$param " }
-		
+
 		if ($param eq 'board') { $activepage = "Synopsis" }
 		else { $activepage = $traduction->{'flow_db'}->{$xlang} }
-		
+
 		if ($param = url_param('id')) { $args .= " -id=$param " }
 		if ($param = url_param('lang')) { $args .= " -lang=$param " }
 		if ($param = url_param('alph')) { $args .= " -alph=$param " }
@@ -321,16 +320,10 @@ my $card = url_param('card') || '';
 		if ($param = url_param('limit')) { $args .= " -limit=$param " }
 
 		my $id = url_param('id') || '';
-		
-		#if (url_param('card') eq 'searching') { die param('hiddensearch'). " = $args" }
-		
+
 		my $alph = url_param('alph') || 'NULL';
-		
 		$pagetitle = get_title($dbc, $xbase, $card, $id, $search, $xlang, 'NULL', $alph, $traduction);
 
-
-				
-#		$script = "/var/www/html/perl/explorer20.pl $args";
 		$script = "/var/www/html/perl/explorer20.pl $args";
 	}
 	elsif ($xpage eq 'project') {
