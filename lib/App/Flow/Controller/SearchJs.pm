@@ -19,7 +19,7 @@ sub call {
 
   # génération de la réponse -- contenu valide pendant 30 min.
   my $res = $req->new_response(200);
-  $res->content_type('application/json; charset=UTF-8');
+  $res->content_type('text/javascript; charset=UTF-8');
   $res->header(expire => time + 1800);
 
   # requêtes en base
