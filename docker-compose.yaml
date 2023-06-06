@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:12.5
+    container_name: flow_postgres_container
+    ports:
+      - '5432:5432' # 5432 is the default port
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=pgadmin
+    volumes:
+      - ./dumps:/dumps
