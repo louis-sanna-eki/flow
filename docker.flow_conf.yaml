@@ -1,13 +1,13 @@
 databases:
   flow:
     connect:
-      - dbi:Pg:dbname=flow;host=localhost;port=5432
+      - dbi:Pg:dbname=flow;host=postgres;port=5432
       - postgres
       - pgadmin
       - { pg_enable_utf8: 1 }
   traduction_utf8:
     connect:
-      - dbi:Pg:dbname=traduction_utf8;host=localhost;port=5432
+      - dbi:Pg:dbname=traduction_utf8;host=postgres;port=5432
       - postgres
       - pgadmin
       - { pg_enable_utf8: 1 }
