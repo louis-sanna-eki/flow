@@ -5,7 +5,7 @@ FROM perl:5.30
 RUN cpanm App::cpanminus
 
 # Create a directory to hold your application
-WORKDIR /
+WORKDIR /app
 
 # Copy your application's files into the image
 COPY . .
