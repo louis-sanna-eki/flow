@@ -78,3 +78,15 @@ docker exec -i flow_postgres_container psql -U postgres -d traduction_utf8 < ./d
 Site can be found at
 
 http://localhost:5000/flow
+
+### Deploy dumps to supabase database
+
+Example query (adapt url and port to your instance)
+
+```shell
+PGPASSWORD=[YOUR-PASSWORD] psql -h db.xirkjyqwjyjlvghvlkhr.supabase.co -p 6543 -U postgres -d postgres -f ./dumps/flow.sql
+```
+
+```shell
+PGPASSWORD=[YOUR-PASSWORD] psql -h db.qykgrbswttjovptkiqtg.supabase.co -p 5432 -d postgres -U postgres -f ./dumps/traduction_utf8.sql
+```
